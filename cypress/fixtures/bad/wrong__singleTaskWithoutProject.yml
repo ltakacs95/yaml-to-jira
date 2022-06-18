@@ -1,0 +1,9 @@
+tasks:
+  - type: Bug
+    summary: 500 instead of 404 on missing pages
+    ref: reference
+    description:
+      current situation: >-
+        500 status code on missing page
+      requested situation: 404 status code on missing page
+      notes: Test first.

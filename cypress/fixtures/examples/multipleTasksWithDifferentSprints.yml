@@ -1,0 +1,43 @@
+boardId: 430
+project: JIR
+sprintField: customfield_1
+tasks:
+  - component: example.com
+    type: Bug
+    sprint: NEXT
+    summary: ticket summary
+    assignee: username
+    estimate: 2h 30m
+    ref: reference
+    description:
+      current situation: >-
+        If an non-existend url under /api ist visited, an 500 error is thrown,
+        thus sending an alert by email
+      requested situation: Non-existing Controller Actions should respond with 404
+      notes: Test first.
+  - component: example.com
+    type: Bug
+    sprint: ACTIVE
+    summary: ticket summary
+    assignee: username
+    estimate: 2h 30m
+    ref: reference
+    description:
+      current situation: >-
+        If an non-existend url under /api ist visited, an 500 error is thrown,
+        thus sending an alert by email
+      requested situation: Non-existing Controller Actions should respond with 404
+      notes: Test first.
+  - component: example.com
+    type: Bug
+    sprint: NEXT
+    summary: ticket summary
+    assignee: username
+    estimate: 2h 30m
+    ref: reference
+    description:
+      current situation: >-
+        If an non-existend url under /api ist visited, an 500 error is thrown,
+        thus sending an alert by email
+      requested situation: Non-existing Controller Actions should respond with 404
+      notes: Test first.

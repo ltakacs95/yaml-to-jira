@@ -1,0 +1,27 @@
+project: JIR
+stories:
+  - component: example.com
+    summary: story summary
+    assignee: username
+    ref: main_story
+    description:
+      current situation: >-
+        If an non-existend url under /api ist visited, an 500 error is thrown,
+        thus sending an alert by email
+      requested situation: Non-existing Controller Actions should respond with 404
+      notes: Test first.
+    tasks:
+      - summary: task summary
+        assignee: username
+        estimate: 1h
+        ref: reference
+        description: TASK description
+      - type: Bug
+        summary: bug summary
+        assignee: username
+        estimate: 2h 30m
+        ref: other
+        description:
+          current situation: >-
+            bug
+          request situation: no bug

@@ -1,0 +1,12 @@
+project: JIR
+boardId: 42
+tasks:
+  - type: Bug
+    summary: 500 instead of 404 on missing pages
+    ref: reference
+    sprint: MINE
+    description:
+      current situation: >-
+        500 status code on missing page
+      requested situation: 404 status code on missing page
+      notes: Test first.

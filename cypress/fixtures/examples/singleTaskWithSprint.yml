@@ -1,0 +1,16 @@
+project: MINE
+boardId: 42
+sprintField: customfield_1337
+tasks:
+  - component: example.com
+    type: Bug
+    summary: 500 instead of 404 on missing pages
+    assignee: username
+    sprint: TEST
+    estimate: 2h 30m
+    ref: reference
+    description:
+      current situation: >-
+        500 status code on missing page
+      requested situation: 404 status code on missing page
+      notes: Test first.

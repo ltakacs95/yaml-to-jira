@@ -7,7 +7,6 @@ tasks:
     summary: 500 instead of 404 on missing pages
     assignee: username
     estimate: 2h 30m
-    ref: reference
     description:
       current situation: >-
         500 status code on missing page

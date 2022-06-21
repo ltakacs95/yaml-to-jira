@@ -1,5 +1,13 @@
 import yaml from 'js-yaml'
-import {buildDescription, prependToSummary} from './functions.mjs'
+import { buildDescription, prependToSummary } from './functions.mjs'
+
+const slugify = str =>
+  str
+    .toLowerCase()
+    .trim()
+    .replace(/[^\w\s-]/g, '')
+    .replace(/[\s_-]+/g, '-')
+    .replace(/^-+|-+$/g, '')
 
 const makeFields = (ticket, component, prepend, root) => {
   const fields = {}
@@ -12,7 +20,8 @@ const makeFields = (ticket, component, prepend, root) => {
     fields.summary = prependToSummary(fields.summary, ticket.prepend || prepend)
   }
 
-  fields.ref = ticket.ref || ''
+  fields.ref = ticket.ref || slugify(ticket.summary)
+  fields.priority = { name: ticket.priority || 'Medium' }
 
   fields.project = root.project
   if (ticket.project) {
@@ -22,7 +31,7 @@ const makeFields = (ticket, component, prepend, root) => {
   fields.project = { key: fields.project }
 
   if (ticket.assignee) {
-    fields.assignee = {name: ticket.assignee.toLowerCase()}
+    fields.assignee = { name: ticket.assignee.toLowerCase() }
   }
 
   if (ticket.description) {
@@ -37,24 +46,26 @@ const makeFields = (ticket, component, prepend, root) => {
     fields.timetracking = {
       originalEstimate: ticket.estimate,
       remainingEstimate: ticket.estimate
-    };
+    }
   }
 
-  return fields;
-};
+  fields.links = ticket.links
+
+  return fields
+}
 
 const processTask = (task, root, component = '', prepend = '') => {
-  const fields = makeFields(task, component, prepend, root);
+  const fields = makeFields(task, component, prepend, root)
 
-  fields.issuetype = {name: task.type || 'Task'}
+  fields.issuetype = { name: task.type || 'Task' }
 
   return fields
 }
 
 const processStory = (story, root, component = '', prepend = '') => {
-  const fields = makeFields(story, component, prepend, root);
+  const fields = makeFields(story, component, prepend, root)
 
-  fields.issuetype = {name: 'Story'}
+  fields.issuetype = { name: 'Story' }
   if (story.tasks && story.tasks.length > 0) {
     fields.tasks = []
     for (let i = 0; i < story.tasks.length; i++) {
@@ -63,13 +74,13 @@ const processStory = (story, root, component = '', prepend = '') => {
     }
   }
 
-  return fields;
+  return fields
 }
 
 const processEpic = (epic, root) => {
-  const fields = makeFields(epic, '', '', root);
+  const fields = makeFields(epic, '', '', root)
 
-  fields.issuetype = {name: 'Epic'}
+  fields.issuetype = { name: 'Epic' }
   if (epic.stories && epic.stories.length > 0) {
     fields.stories = []
     for (let i = 0; i < epic.stories.length; i++) {
@@ -77,8 +88,7 @@ const processEpic = (epic, root) => {
       fields.stories.push(task)
     }
   }
-
-  return fields;
+  return fields
 }
 
 export const main = (input, domain = null, username = null, password = null, sprintIds = {}) => {
@@ -96,7 +106,6 @@ export const main = (input, domain = null, username = null, password = null, spr
     console.error('Error: ' + e)
     return null
   }
-
 
   if (!data.project) {
     console.error('Please provide a project at root level in your yaml.')

@@ -77,7 +77,7 @@ const processStory = (story, root, component = '', prepend = '', epic = null) =>
   if (story.tasks && story.tasks.length > 0) {
     fields.tasks = []
     for (let i = 0; i < story.tasks.length; i++) {
-      const task = processTask(story.tasks[i], root, story.component || component, story.prepend || prepend)
+      const task = processTask(story.tasks[i], root, story.component || component, story.prepend || prepend, epic)
       fields.tasks.push(task)
     }
   }

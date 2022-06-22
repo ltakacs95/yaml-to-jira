@@ -1,4 +1,5 @@
 project: JIR
+epicField: customfield_10000
 epics:
   - component: epic.example
     summary: epic summary

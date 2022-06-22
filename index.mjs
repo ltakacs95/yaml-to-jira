@@ -53,7 +53,7 @@ program
       const tickets = flattenTickets(hierarchicalTicketFieldsWithLinks)
 
       const createTicket = (fields, url) => {
-        const {ref, links, ...fieldsToSend} = fields // clone without ref & links
+        const {ref, links, ...fieldsToSend} = fields // clone without ref, links, epicField
         url = url + '/rest/api/2/issue/'
         return axios.request({
           method: 'POST',

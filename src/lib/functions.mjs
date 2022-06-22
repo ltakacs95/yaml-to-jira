@@ -123,6 +123,41 @@ export const collectIssueLinks = (tickets) => {
   }, [])
 }
 
+export const replaceRefToKeyInHierarchy = (data, ref, key) => {
+  if (!data.epicField) {
+    return data
+  }
+
+  if (!data.epics) {
+    return data
+  }
+
+  data.epics = data.epics.map((epic) => {
+    if (epic.ref !== ref) {
+      return epic
+    }
+
+    return {
+      ...epic,
+      stories: epic.stories.map((story) => {
+
+        return {
+          ...story,
+          [data.epicField]: key,
+          tasks: story.tasks.map((task) => {
+            return {
+              ...task,
+              [data.epicField]: key,
+            };
+          })
+        };
+      })
+    };
+  });
+
+  return data
+}
+
 export const addHierarchicalIssueSplitLinks = (data) => {
   if (data.epics) {
     data.epics = data.epics.map((epic) => {

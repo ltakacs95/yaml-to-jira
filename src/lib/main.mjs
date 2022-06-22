@@ -46,7 +46,7 @@ const makeFields = (ticket, component, prepend, root) => {
     fields.timetracking = {
       originalEstimate: ticket.estimate,
       remainingEstimate: ticket.estimate
-    }
+    };
   }
 
   fields.links = ticket.links
@@ -54,16 +54,24 @@ const makeFields = (ticket, component, prepend, root) => {
   return fields
 }
 
-const processTask = (task, root, component = '', prepend = '') => {
+const processTask = (task, root, component = '', prepend = '', epic = null) => {
   const fields = makeFields(task, component, prepend, root)
 
   fields.issuetype = { name: task.type || 'Task' }
 
-  return fields
+  if (root.epicField && epic) {
+    fields[root.epicField] = epic
+  }
+
+  return fields;
 }
 
-const processStory = (story, root, component = '', prepend = '') => {
+const processStory = (story, root, component = '', prepend = '', epic = null) => {
   const fields = makeFields(story, component, prepend, root)
+
+  if (root.epicField && epic) {
+    fields[root.epicField] = epic
+  }
 
   fields.issuetype = { name: 'Story' }
   if (story.tasks && story.tasks.length > 0) {
@@ -84,14 +92,14 @@ const processEpic = (epic, root) => {
   if (epic.stories && epic.stories.length > 0) {
     fields.stories = []
     for (let i = 0; i < epic.stories.length; i++) {
-      const task = processStory(epic.stories[i], root, epic.component, epic.prepend)
+      const task = processStory(epic.stories[i], root, epic.component, epic.prepend, fields.ref)
       fields.stories.push(task)
     }
   }
   return fields
 }
 
-export const main = (input, domain = null, username = null, password = null, sprintIds = {}) => {
+export const main = (input, domain = null, username = null, password = null, sprintIds = {}, epicField = null) => {
   if (!input) {
     console.error('Please pipe in data as yaml. \n Example: \n cat my-tasks.yml | y2j http://example-jira.com username password')
     return null
@@ -126,6 +134,10 @@ export const main = (input, domain = null, username = null, password = null, spr
 
   data.baseUrl = `https://${username}:${password}@${domain}`
   data.sprintIds = sprintIds
+
+  if (epicField || data.epicField) {
+    output.epicField = epicField || data.epicField
+  }
 
   if (data.tasks && data.tasks.length > 0) {
     output.tasks = []

@@ -1,3 +1,4 @@
+import {replaceRefToKeyInHierarchy} from '../../../src/lib/functions.mjs'
 import { main } from '../../../src/lib/main.mjs'
 
 let singleTaskWithComponentYaml
@@ -143,6 +144,16 @@ describe('default command', () => {
   it('can process epic ', () => {
     const summary = main(epicWithAStoryWithTasks).epics[0].summary
     expect(summary).to.eq('epic.example - epic summary')
+  })
+
+
+  it('can process epic link', () => {
+    const output = main(epicWithAStoryWithTasks)
+    console.log(output.epicField)
+    const epic = output.epics[0].stories[0][output.epicField]
+    expect(epic).to.eq(output.epics[0].ref)
+
+   expect(JSON.stringify(replaceRefToKeyInHierarchy(output,'epic-summary','JIRA-1337'))).to.eq('{"epicField":"customfield_10000","epics":[{"summary":"epic.example - epic summary","ref":"epic-summary","priority":{"name":"Medium"},"project":{"key":"JIR"},"description":"epic descreiption","issuetype":{"name":"Epic"},"stories":[{"summary":"epic.example - story summary","ref":"main_story","priority":{"name":"Medium"},"project":{"key":"JIR"},"assignee":{"name":"username"},"description":"<strong>Current Situation</strong>:<br>If an non-existend url under /api ist visited, an 500 error is thrown, thus sending an alert by email<br><br><strong>Requested Situation</strong>:<br>Non-existing Controller Actions should respond with 404<br><br><strong>Notes</strong>:<br>Test first.<br><br>","customfield_10000":"JIRA-1337","issuetype":{"name":"Story"},"tasks":[{"summary":"epic.example - task summary","ref":"reference","priority":{"name":"Medium"},"project":{"key":"JIR"},"assignee":{"name":"username"},"description":"TASK description","timetracking":{"originalEstimate":"1h","remainingEstimate":"1h"},"issuetype":{"name":"Task"},"customfield_10000":"JIRA-1337"},{"summary":"epic.example - bug summary","ref":"other","priority":{"name":"Medium"},"project":{"key":"JIR"},"assignee":{"name":"username"},"description":"<strong>Current Situation</strong>:<br>bug<br><br><strong>Request Situation</strong>:<br>no bug<br><br>","timetracking":{"originalEstimate":"2h 30m","remainingEstimate":"2h 30m"},"issuetype":{"name":"Bug"},"customfield_10000":"JIRA-1337"}]}]}]}')
   })
 
   it('can process epic stories', () => {
